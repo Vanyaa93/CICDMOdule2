@@ -3,9 +3,6 @@ from gallery.models import Category, Image
 from django.core.files.uploadedfile import SimpleUploadedFile
 from datetime import date
 
-
-# -------- Фікстури --------
-
 @pytest.fixture
 def category_factory(db):
     def create_category(name):
@@ -37,3 +34,9 @@ def image_factory(db, image_file):
 
     return create_image
 
+# Category
+@pytest.mark.parametrize("name", ["Rock", "Bash", "Mozart"])
+def test_category_creation(category_factory, name):
+    category = category_factory(name)
+    assert category.name == name
+    assert Category.objects.filter(name=name).exists()
