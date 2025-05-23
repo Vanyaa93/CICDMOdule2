@@ -40,3 +40,20 @@ def test_category_creation(category_factory, name):
     category = category_factory(name)
     assert category.name == name
     assert Category.objects.filter(name=name).exists()
+
+# Images
+def test_image_creation(image_factory):
+    image = image_factory("Test Image", 18)
+    assert image.title == "Test Image"
+    assert image.age_limit == 18
+    assert image.created_date == date.today()
+
+
+def test_image_with_categories(image_factory, category_factory):
+    cat1 = category_factory("Rock")
+    cat2 = category_factory("Bash")
+    image = image_factory("With Categories", 16, [cat1, cat2])
+
+    assert image.categories.count() == 2
+    assert cat1 in image.categories.all()
+    assert cat2 in image.categories.all()
